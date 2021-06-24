@@ -1,0 +1,60 @@
+server:
+  port: 57010
+  max-http-header-size: 100KB
+
+nacos:
+  server:
+    addr: 127.0.0.1:8848
+spring:
+  application:
+    name: merchant-application
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.server.addr}
+        namespace: eb6520c3-0d5b-47b5-9e05-14b7a7ff263c
+      config:
+        server-addr: ${nacos.server.addr}
+        file-extension: yaml
+        namespace: eb6520c3-0d5b-47b5-9e05-14b7a7ff263c
+        group: SHANJUPAY_GROUP
+        ext-config:
+          -
+            refresh: true
+            data-id: spring-boot-http.yaml # spring boot http配置
+            group: COMMON_GROUP #通用配置组
+  # 上传文件配置
+  servlet:
+    multipart:
+      enabled: true
+      # 支持文件写入磁盘
+      file-size-threshold: 0
+      # 临时目录
+      location:
+      # 文件大小
+      max-file-size: 10MB
+      # 请求大小
+      max-request-size: 30MB
+
+dubbo:
+  scan:
+    # 扫描基准包
+    base-packages: com.shanjupay
+  protocol:
+    # dubbo协议
+    name: dubbo
+    port: 20891
+  registry:
+    address: nacos://127.0.0.1:8848
+  application:
+    qos-port: 22310
+  consumer:
+    check: false
+    timeout: 3000
+    retries: -1
+
+
+#logging:
+#  config: classpath:log4j2conf.xml
